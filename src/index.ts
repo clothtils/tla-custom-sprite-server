@@ -20,22 +20,24 @@ app.get('/*', (req, res) => {
         return;
     }
 
+    const normalized_path = path.join('/', req.path)
+
     // Check if this is a custom sprite or TLA asset
-    if (req.path.includes('c!')) {
+    if (normalized_path.includes('c!')) {
         // Load the custom sprite
-        console.log(get_custom_sprite_path(req.path))
-        res.sendFile(path.join(path.resolve(), get_custom_sprite_path(req.path)))
+        console.log(get_custom_sprite_path(normalized_path))
+        res.sendFile(path.join(path.resolve(), get_custom_sprite_path(normalized_path)))
     } else {
         // Load the basegame TLA asset
 
-        proxy_tla_asset(req.path).then(result => {
+        proxy_tla_asset(normalized_path).then(result => {
             for (const header_key in result.headers) {
                 res.setHeader(header_key, result.headers[header_key])
             }
 
             res.send(result.buffer)
         }).catch((error) => {
-            console.log(`Failed to proxy TLA asset ${req.path}: ${error}`)
+            console.log(`Failed to proxy TLA asset ${normalized_path}: ${error}`)
         })
     }
 })
