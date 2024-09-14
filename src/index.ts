@@ -27,11 +27,8 @@ app.get('/*', (req, res) => {
         res.sendFile(path.join(path.resolve(), get_custom_sprite_path(req.path)))
     } else {
         // Load the basegame TLA asset
-        // ..Hack
-        let _path = req.path
-        if (req.path.includes('hud_')) _path = '/preview/comp2000/hud_beefb.png?v=0-112-1'
 
-        proxy_tla_asset(_path).then(result => {
+        proxy_tla_asset(req.path).then(result => {
             for (const header_key in result.headers) {
                 res.setHeader(header_key, result.headers[header_key])
             }
