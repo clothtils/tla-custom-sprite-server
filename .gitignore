@@ -1,0 +1,8 @@
+package-lock.json
+node_modules
+asset_cache
+asset_cache.json
+custom_assets
+build
+*.txt
+custom
